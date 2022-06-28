@@ -35,6 +35,7 @@ body {
   }
   
   .shows {
+    height: 200px;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-gap: 3rem;
@@ -43,5 +44,6 @@ body {
   }
   
   img {
-    width: 45%;
+    width: 200px;
+    height: 200px;
   }
