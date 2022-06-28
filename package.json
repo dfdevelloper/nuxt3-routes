@@ -7,6 +7,7 @@
     "preview": "nuxt preview"
   },
   "devDependencies": {
+    "@nuxtjs/vercel-builder": "^0.22.1",
     "nuxt": "3.0.0-rc.4"
   }
 }
