@@ -1,38 +1,48 @@
 <template>
-  <div>
-    <form @submit.prevent="submit">
-      <input type="text" v-model="search" />
-      <button @click="submit">Search</button>
-    </form>
-
-    <div class="shows">
-      <div v-for="show in shows" :key="show.id">
-        <nuxt-link :to="'/search/' + show.show.id">
-          {{ show.show.name }}
-          <img :src="show.show.image?.medium" alt="" />
-        </nuxt-link>
-      </div>
+  <div >
+    <h1>{{ currentTime }}</h1>
+    <div class="wrapper">
+      <div class="main" v-for="(x, idx) in content" :key="idx">
+      <ul :style="{ backgroundColor: idx % 2 === 0 ? 'green' : 'grey' }">
+        <li
+          v-for="(y, idx2) in x"
+          :key="y.id"
+          :style="{ color: idx2 % 2 !== 0 ? 'white' : 'red' }"
+        >
+          {{ y.name }}
+        </li>
+      </ul>
     </div>
-    <!-- <NuxtLink to="/search">Go to search page</NuxtLink> -->
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
-import "../app.css";
+import { useCurrentTime } from "../composables/useCurrentTime";
 
-const shows = ref([]);
-const search = ref("");
-const URL = "https://api.tvmaze.com/search/shows?q=";
+const content = ref([]);
+const { currentTime } = useCurrentTime();
 
-async function searchShows(search) {
-  const grabData = await fetch(URL + search.value);
-  const json = await grabData.json();
-  shows.value = json;
-}
+const abc = await fetch(`https://api.tvmaze.com/shows/19?embed=episodes`);
 
-async function submit() {
-  if (!search.value) return;
-  searchShows(search);
-}
+const json = await abc.json();
+content.value = new Array(200).fill(json._embedded.episodes);
 </script>
+
+<style>
+.main {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100px;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid blue;
+}
+
+.wrapper{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+</style>
